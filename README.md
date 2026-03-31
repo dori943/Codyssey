@@ -1,2 +1,196 @@
-# Codyssey
+# Codyssey 1-1
 Repository for integrating GitHub and Codyssey
+
+
+# 🖥️ AI/SW 개발 워크스테이션 구축
+
+## 1. 프로젝트 개요
+
+본 프로젝트는 AI/SW 개발을 위한 표준 워크스테이션 환경을 직접 구축하는 미션입니다.
+
+- **핵심 도구**: 리눅스 CLI(터미널), Docker(컨테이너), Git/GitHub(버전 관리)
+- **목표**: 누구나 동일하게 실행·배포·디버깅할 수 있는 재현 가능한 개발 환경 구성
+- **주요 학습**: 이미지·컨테이너 분리 개념, 포트 매핑, 볼륨 영속성, Git 협업 흐름
+
+---
+
+## 2. 실행 환경
+
+| 항목 | 내용 |
+|------|------|
+| OS | macOS 15.x (Apple Silicon) |
+| Shell | zsh |
+| Terminal | iTerm2 / 기본 터미널 |
+| Docker | 26.x.x (OrbStack) |
+| Git | 2.x.x |
+
+> 확인 명령어:
+> ```bash
+> sw_vers           # OS 버전
+> docker --version  # Docker 버전
+> git --version     # Git 버전
+> ```
+
+---
+
+## 3. 수행 항목 체크리스트
+
+| 항목 | 상태 |
+|------|------|
+| 터미널 기본 조작 (pwd, ls, cd, mkdir, cp, mv, rm) | ✅ |
+| 파일 권한 확인 및 변경 (chmod) | ✅ |
+| Docker 설치 점검 (docker --version, docker info) | ✅ |
+| hello-world 컨테이너 실행 | ✅ |
+| ubuntu 컨테이너 실행 및 내부 진입 | ✅ |
+| Dockerfile 작성 및 커스텀 이미지 빌드 | ✅ |
+| 포트 매핑으로 웹 서버 접속 확인 | ✅ |
+| 바인드 마운트 변경 반영 확인 | ✅ |
+| Docker 볼륨 영속성 검증 | ✅ |
+| Git 사용자 설정 및 기본 브랜치 설정 | ✅ |
+| VSCode GitHub 로그인 및 저장소 연동 | ✅ |
+
+---
+
+## 4. 검증 방법 및 결과
+
+### 4-1. 터미널 기본 조작
+```bash
+pwd
+# /Users/yourname
+
+ls -la
+# drwxr-xr-x  ...
+
+mkdir -p ~/workstation/practice
+cd ~/workstation/practice
+touch test.txt
+cp test.txt test_copy.txt
+mv test_copy.txt renamed.txt
+rm renamed.txt
+```
+
+### 4-2. 파일 권한 변경
+```bash
+# 변경 전
+ls -l test.txt
+# -rw-r--r--  1 user  staff  0 ...
+
+chmod 755 test.txt
+
+# 변경 후
+ls -l test.txt
+# -rwxr-xr-x  1 user  staff  0 ...
+```
+
+> 디렉토리 권한 변경도 동일하게 수행 (practice/ 디렉토리에 chmod 700 적용)
+
+### 4-3. Docker 설치 및 점검
+```bash
+docker --version
+# Docker version 26.x.x, build xxxxxxx
+
+docker info
+# Server Version: ...
+```
+
+### 4-4. hello-world 및 ubuntu 컨테이너 실행
+```bash
+docker run hello-world
+# Hello from Docker!
+
+docker run -it ubuntu bash
+# root@컨테이너ID:/# ls
+# root@컨테이너ID:/# echo "hello"
+```
+
+### 4-5. Dockerfile 빌드 및 포트 매핑
+```bash
+docker build -t my-web:1.0 .
+# Successfully built ...
+
+docker run -d -p 8080:80 --name my-web-8080 my-web:1.0
+docker run -d -p 8081:80 --name my-web-8081 my-web:1.0
+
+curl http://localhost:8080
+# <html>...
+```
+
+> 브라우저 접속 화면: [아래 스크린샷 참고](#스크린샷)
+
+### 4-6. 바인드 마운트
+```bash
+docker run -d -p 8082:80 \
+  -v $(pwd)/site:/usr/share/nginx/html \
+  --name bind-test my-web:1.0
+
+# 호스트에서 파일 수정 후 브라우저 새로고침으로 즉시 반영 확인
+echo "<h1>변경됨</h1>" > site/index.html
+```
+
+### 4-7. Docker 볼륨 영속성
+```bash
+docker volume create mydata
+
+docker run -d --name vol-test -v mydata:/data ubuntu sleep infinity
+docker exec -it vol-test bash -c "echo 'hello volume' > /data/hello.txt"
+docker rm -f vol-test
+
+docker run -d --name vol-test2 -v mydata:/data ubuntu sleep infinity
+docker exec -it vol-test2 bash -c "cat /data/hello.txt"
+# hello volume  ← 컨테이너 삭제 후에도 데이터 유지됨
+```
+
+### 4-8. Git 설정
+```bash
+git config --global user.name "이름"
+git config --global user.email "이메일"
+git config --global init.defaultBranch main
+
+git config --list
+# user.name=이름
+# user.email=이메일
+# init.defaultBranch=main
+```
+
+---
+
+## 5. 트러블슈팅
+
+### 🔧 Case 1: [문제 제목]
+
+| 단계 | 내용 |
+|------|------|
+| **문제** | 어떤 오류가 발생했는지 |
+| **원인 가설** | 왜 발생했을 것이라 생각했는지 |
+| **확인** | 어떤 명령/방법으로 확인했는지 |
+| **해결/대안** | 어떻게 해결했는지 |
+```bash
+# 관련 명령어 또는 에러 메시지
+```
+
+---
+
+### 🔧 Case 2: [문제 제목]
+
+| 단계 | 내용 |
+|------|------|
+| **문제** | 어떤 오류가 발생했는지 |
+| **원인 가설** | 왜 발생했을 것이라 생각했는지 |
+| **확인** | 어떤 명령/방법으로 확인했는지 |
+| **해결/대안** | 어떻게 해결했는지 |
+```bash
+# 관련 명령어 또는 에러 메시지
+```
+
+---
+
+## 6. 스크린샷
+
+### 포트 매핑 접속 화면
+<!-- 여기에 스크린샷 이미지 추가 -->
+![포트 8080 접속](./screenshots/port-8080.png)
+![포트 8081 접속](./screenshots/port-8081.png)
+
+### VSCode GitHub 연동
+<!-- 여기에 스크린샷 이미지 추가 -->
+![VSCode GitHub 연동](./screenshots/vscode-github.png)
