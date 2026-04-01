@@ -330,5 +330,13 @@ ehgml89458755@c4r5s7 my-web % docker build -t my-web:1.0 .
 ```
 
 ```bash
+cat > Dockerfile << 'EOF'
+FROM nginx:alpine
 
+LABEL org.opencontainers.image.title="my-custom-nginx"
+
+ENV APP_ENV=dev
+
+COPY site/ /usr/share/nginx/html/
+EOF
 ```
