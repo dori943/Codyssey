@@ -226,13 +226,12 @@ curl http://localhost:8080
 
 ### 4-6. 바인드 마운트
 ```bash
+#컴퓨터 폴더를 컨테이너 안에 직접 연결
 docker run -d -p 8082:80 \
   -v $(pwd)/site:/usr/share/nginx/html \
   --name bind-test my-web:1.0
 
 # 호스트에서 파일 수정 후 브라우저 새로고침으로 즉시 반영 확인
-echo "<h1>변경됨</h1>" > site/index.html
-
 cat > site/index.html << 'EOF'
 <!DOCTYPE html>
 <html lang="ko">
@@ -250,15 +249,26 @@ EOF
 
 ### 4-7. Docker 볼륨 영속성
 ```bash
+# 볼륨 생성
 docker volume create mydata
 
+# 볼륨 목록 확인
+docker volume ls
+
+# 볼륨 연결해서 컨테이너 실행 + 데이터 쓰기
 docker run -d --name vol-test -v mydata:/data ubuntu sleep infinity
 docker exec -it vol-test bash -c "echo 'hello volume' > /data/hello.txt"
-docker rm -f vol-test
+docker exec -it vol-test bash -c "cat /data/hello.txt"
+# hello volume
 
+# 컨테이너 삭제
+docker rm -f vol-test
+docker ps -a   # 컨테이너 없음 확인
+
+# 새 컨테이너로 같은 볼륨 마운트 → 데이터 살아있는지 확인
 docker run -d --name vol-test2 -v mydata:/data ubuntu sleep infinity
 docker exec -it vol-test2 bash -c "cat /data/hello.txt"
-# hello volume  ← 컨테이너 삭제 후에도 데이터 유지됨
+# hello volume  ← 컨테이너 삭제했는데도 데이터 유지!
 ```
 
 ### 4-8. Git 설정
