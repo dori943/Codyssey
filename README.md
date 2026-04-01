@@ -82,48 +82,121 @@ mv test_copy.txt renamed.txt
 rm renamed.txt
 
 # 디렉토리 삭제
+# -r(recursive)-> 디렉토리 안의 파일들을 전부 들어가서 삭제
+# -f -> 삭제 확인 메시지 없이 강제 삭제
+# -rf -> 가장 높은 강제성
 mkdir temp_dir
 rm -r temp_dir
 ```
 
-### 4-2. 파일 권한 변경
+### 4-2. 파일 권한 확인 및 변경
 ```bash
-# 변경 전
+# | rwx | r-x | r-x        | rw- | r-- | r--|
+# 본인(7) 그룹(5) 전체(5)   본인(6) (4)  (4)
+# (7) : 읽기+쓰기+실행 (모든 권한)
+# (6) : 읽기+쓰기
+# (5) : 읽기+실행
+# (5) : 읽기만
+# (0) : 없음
+# 현재 권한 확인
 ls -l test.txt
-# -rw-r--r--  1 user  staff  0 ...
 
+# ls -l  #파일 권한 확인할 때 -> 디렉토리 "안의 내용물"목록을 보여줌
+# ls -ld #디렉토리 권한 확인할 때 -> 디렉토리 "자체"의 정보를 보여줌
+
+# 파일 권한 변경
 chmod 755 test.txt
-
-# 변경 후
 ls -l test.txt
-# -rwxr-xr-x  1 user  staff  0 ...
-```
+# -rwxr-xr-x  (755로 변경됨)
 
-> 디렉토리 권한 변경도 동일하게 수행 (practice/ 디렉토리에 chmod 700 적용)
+# 디렉토리 권한 변경
+mkdir secret_dir
+ls -ld secret_dir
+# drwxr-xr-x
+
+chmod 700 secret_dir
+ls -ld secret_dir
+# drwx------  (본인만 접근 가능)
+```
 
 ### 4-3. Docker 설치 및 점검
 ```bash
 docker --version
-# Docker version 26.x.x, build xxxxxxx
+# Docker version 28.5.2
 
 docker info
-# Server Version: ...
+# Client : 
+#   Version: 28.5.2
+#   Context: orbstack
+#   ...
+
+# 이미지 목록
+docker images
+
+# 실행 중인 컨테이너
+docker ps
+
+# 전체 컨테이너 (중지 포함)
+docker ps -a
 ```
 
 ### 4-4. hello-world 및 ubuntu 컨테이너 실행
 ```bash
-docker run hello-world
-# Hello from Docker!
 
+#hello-world 컨테이너 실행
+docker run hello-world
+# Hello from Docker! ...
+
+# ubuntu 컨테이너 실행 + 내부 진입
 docker run -it ubuntu bash
-# root@컨테이너ID:/# ls
-# root@컨테이너ID:/# echo "hello"
+
+#컨테이너 안에서 실행
+root@abc123:/# ls
+root@abc123:/# echo "나는 컨테이너 안에 있다"
+root@abc123:/# cat /etc/os-release
+
+# 컨테이너 종료 (프로세스도 종료됨)
+root@abc123:/# exit
+
+# 비교: exec는 실행 중인 컨테이너에 접속, exit해도 컨테이너는 살아있음
+# run -it은 foreground, run -d는 background
+docker run -d --name my-ubuntu ubuntu sleep infinity
+docker exec -it my-ubuntu bash
+root@abc123:/# exit   # 빠져나와도 컨테이너는 계속 실행 중
+docker ps             # 확인
+
 ```
 
-### 4-5. Dockerfile 빌드 및 포트 매핑
+### 4-5. Dockerfile 작성 및 커스텀 이미지 빌드
 ```bash
+#폴더 만들기
+mkdir -p ~/workstation/my-web/site
+cd ~/workstation/my-web
+
+# site/index.html 파일 만들기
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>My Custom Web Server</h1>
+    <p>Docker로 실행 중!</p>
+  </body>
+</html>
+
+# Dockerfile 작성
+FROM nginx:alpine
+
+LABEL org.opencontainers.image.title="my-custom-nginx"
+
+ENV APP_ENV=dev
+
+COPY site/ /usr/share/nginx/html/
+
+#빌드 및 실행
 docker build -t my-web:1.0 .
 # Successfully built ...
+
+# 빌드된 이미지 확인
+docker images
 
 docker run -d -p 8080:80 --name my-web-8080 my-web:1.0
 docker run -d -p 8081:80 --name my-web-8081 my-web:1.0
