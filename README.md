@@ -55,18 +55,35 @@ Repository for integrating GitHub and Codyssey
 
 ### 4-1. 터미널 기본 조작
 ```bash
+# 현재 위치 확인
 pwd
-# /Users/yourname
 
+# 목록 확인 (숨김 파일 포함)
 ls -la
-# drwxr-xr-x  ...
 
+# 디렉토리 생성 및 이동
 mkdir -p ~/workstation/practice
 cd ~/workstation/practice
+
+# 파일 생성
 touch test.txt
+
+# 파일 내용 작성 및 확인
+echo "hello world" > test.txt
+cat test.txt
+
+# 파일 복사
 cp test.txt test_copy.txt
+
+# 파일 이름 변경 (mv는 이동도 됨)
 mv test_copy.txt renamed.txt
+
+# 파일 삭제
 rm renamed.txt
+
+# 디렉토리 삭제
+mkdir temp_dir
+rm -r temp_dir
 ```
 
 ### 4-2. 파일 권한 변경
