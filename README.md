@@ -177,6 +177,9 @@ cd ~/workstation/my-web
 cat > site/index.html << 'EOF'
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
   <body>
     <h1>My Custom Web Server</h1>
     <p>Docker로 실행 중!</p>
