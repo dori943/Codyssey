@@ -2,15 +2,6 @@
 Repository for integrating GitHub and Codyssey
 
 
-To https://github.com/dori943/Codyssey.git
- ! [rejected]        main -> main (fetch first)
-error: failed to push some refs to 'https://github.com/dori943/Codyssey.git'
-hint: Updates were rejected because the remote contains work that you do not
-hint: have locally. This is usually caused by another repository pushing to
-hint: the same ref. If you want to integrate the remote changes, use
-hint: 'git pull' before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-
 # 🖥️ AI/SW 개발 워크스테이션 구축
 
 ## 1. 프로젝트 개요
@@ -286,30 +277,27 @@ docker exec -it vol-test2 bash -c "cat /data/hello.txt"
 ### 4-8. Git 설정
 ```bash
 # 사용자 정보 설정
-git config --global user.name "홍길동"
-git config --global user.email "your@email.com"
+git config --global user.name "dori943"
+git config --global user.email "ehgml8945@gmail.com"
 
 # 기본 브랜치 이름 설정
 git config --global init.defaultBranch main
 
-# 설정 전체 확인 → 이 출력을 README에 그대로 기록
+# 설정 전체 확인
 git config --list
-# user.name=홍길동
-# user.email=your@email.com
-# init.defaultBranch=main
 ```
 
 ---
 
 ## 5. 트러블슈팅
 
-### 🔧 Case 1: [문제 제목]
+### 🔧 Case 1: [docker build error]
 
 | 단계 | 내용 |
 |------|------|
 | **문제** | docker: 'docker buildx build' requires 1 argument |
-| **원인 가설** | 에러 메시지의 requires 1 argument는 "인자(데이터)가 하나 더 필요하다"는 뜻 -> 명령어 맨 뒤에 한 칸 띄우고 점(.)을 꼭 찍어주세요. 여기서 점(.)은 "현재 디렉토리"를 의미합니다.|
-| **해결/대안** | 명령어 맨 뒤에 한 칸 띄우고 점(.) 찍어|
+| **원인 가설** | 에러 메시지의 requires 1 argument는 "인자(데이터)가 하나 더 필요하다"는 뜻 -> 명령어 맨 뒤에 한 칸 띄우고 점(.)인 디렉토리 위치를 찍지 않아서 생김.
+| **해결/대안** | 명령어 맨 뒤에 한 칸 띄우고 점(.) 찍어서 재빌드|
 ```bash
 ehgml89458755@c4r5s7 my-web % docker build -t my-web:1.0
 #ERROR: docker: 'docker buildx build' requires 1 argument
@@ -317,36 +305,30 @@ ehgml89458755@c4r5s7 my-web % docker build -t my-web:1.0
 #Usage:  docker buildx build [OPTIONS] PATH | URL | -
 
 #Run 'docker buildx build --help' for more information
+```
+
+```bash
+ehgml89458755@c4r5s7 my-web % docker build -t my-web:1.0 .
 
 ```
 
 ---
 
-### 🔧 Case 2: [문제 제목]
+### 🔧 Case 2: [dockerfile 만들지 않아서 생긴 에러]
 
 | 단계 | 내용 |
 |------|------|
-| **문제** | 어떤 오류가 발생했는지 |
-| **원인 가설** | 왜 발생했을 것이라 생각했는지 |
-| **확인** | 어떤 명령/방법으로 확인했는지 |
-| **해결/대안** | HTML 파일을 어떻게 웹 서버로 돌릴지 정의하는 Dockerfile을 먼저 만드셔야 합니다. |
+| **문제** | html파일을 웹 서버로 어떻게 돌릴지 정의하는 dockerfile이 만들어지지않아 생긴 오류 |
+| **원인 가설** | 서버 돌릴 방법이 알려지지 않아서. |
+| **해결/대안** | HTML 파일을 어떻게 웹 서버로 돌릴지 정의하는 Dockerfile를 만듦. |
 ```bash
 ehgml89458755@c4r5s7 my-web % docker build -t my-web:1.0 .
-[+] Building 0.4s (1/1) FINISHED                                                                                                          docker:orbstack
- => [internal] load build definition from Dockerfile                                                                                                 0.2s
- => => transferring dockerfile: 2B                                                                                                                   0.0s
-ERROR: failed to build: failed to solve: failed to read dockerfile: open Dockerfile: no such file or directory
+#[+] Building 0.4s (1/1) FINISHED                                                                #                                         docker:orbstack
+# => [internal] load build definition from Dockerfile                                            #                                                     0.2s
+# => => transferring dockerfile: 2B                                                              #                                                     0.0s
+#ERROR: failed to build: failed to solve: failed to read dockerfile: open Dockerfile: no such #file or directory
 ```
 
----
+```bash
 
-## 6. 스크린샷
-
-### 포트 매핑 접속 화면
-<!-- 여기에 스크린샷 이미지 추가 -->
-![포트 8080 접속](./screenshots/port-8080.png)
-![포트 8081 접속](./screenshots/port-8081.png)
-
-### VSCode GitHub 연동
-<!-- 여기에 스크린샷 이미지 추가 -->
-![VSCode GitHub 연동](./screenshots/vscode-github.png)
+```
