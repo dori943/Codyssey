@@ -282,7 +282,7 @@ ehgml89458755@c4r5s7 my-web % docker build -t my-web:1.0
 | **문제** | 어떤 오류가 발생했는지 |
 | **원인 가설** | 왜 발생했을 것이라 생각했는지 |
 | **확인** | 어떤 명령/방법으로 확인했는지 |
-| **해결/대안** | 어떻게 해결했는지 |
+| **해결/대안** | HTML 파일을 어떻게 웹 서버로 돌릴지 정의하는 Dockerfile을 먼저 만드셔야 합니다. |
 ```bash
 ehgml89458755@c4r5s7 my-web % docker build -t my-web:1.0 .
 [+] Building 0.4s (1/1) FINISHED                                                                                                          docker:orbstack
