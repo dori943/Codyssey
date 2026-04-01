@@ -232,6 +232,10 @@ docker run -d -p 8082:80 \
 
 # 호스트에서 파일 수정 후 브라우저 새로고침으로 즉시 반영 확인
 echo "<h1>변경됨</h1>" > site/index.html
+
+ehgml89458755@c4r5s7 my-web % curl http://localhost:8082
+<h1>변경됨</h1>
+
 ```
 
 ### 4-7. Docker 볼륨 영속성
