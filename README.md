@@ -260,12 +260,17 @@ git config --list
 
 | 단계 | 내용 |
 |------|------|
-| **문제** | 어떤 오류가 발생했는지 |
-| **원인 가설** | 왜 발생했을 것이라 생각했는지 |
-| **확인** | 어떤 명령/방법으로 확인했는지 |
-| **해결/대안** | 어떻게 해결했는지 |
+| **문제** | docker: 'docker buildx build' requires 1 argument |
+| **원인 가설** | 에러 메시지의 requires 1 argument는 "인자(데이터)가 하나 더 필요하다"는 뜻 -> 명령어 맨 뒤에 한 칸 띄우고 점(.)을 꼭 찍어주세요. 여기서 점(.)은 "현재 디렉토리"를 의미합니다.|
+| **해결/대안** | 명령어 맨 뒤에 한 칸 띄우고 점(.) 찍어|
 ```bash
-# 관련 명령어 또는 에러 메시지
+ehgml89458755@c4r5s7 my-web % docker build -t my-web:1.0
+#ERROR: docker: 'docker buildx build' requires 1 argument
+
+#Usage:  docker buildx build [OPTIONS] PATH | URL | -
+
+#Run 'docker buildx build --help' for more information
+
 ```
 
 ---
@@ -279,7 +284,11 @@ git config --list
 | **확인** | 어떤 명령/방법으로 확인했는지 |
 | **해결/대안** | 어떻게 해결했는지 |
 ```bash
-# 관련 명령어 또는 에러 메시지
+ehgml89458755@c4r5s7 my-web % docker build -t my-web:1.0 .
+[+] Building 0.4s (1/1) FINISHED                                                                                                          docker:orbstack
+ => [internal] load build definition from Dockerfile                                                                                                 0.2s
+ => => transferring dockerfile: 2B                                                                                                                   0.0s
+ERROR: failed to build: failed to solve: failed to read dockerfile: open Dockerfile: no such file or directory
 ```
 
 ---
