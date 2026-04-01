@@ -18,11 +18,11 @@ Repository for integrating GitHub and Codyssey
 
 | 항목 | 내용 |
 |------|------|
-| OS | macOS 15.x (Apple Silicon) |
+| OS | macOS 15.7.4 (Apple Silicon) |
 | Shell | zsh |
 | Terminal | iTerm2 / 기본 터미널 |
-| Docker | 26.x.x (OrbStack) |
-| Git | 2.x.x |
+| Docker | 28.5.2 (OrbStack) |
+| Git | 2.53.0 |
 
 > 확인 명령어:
 > ```bash
