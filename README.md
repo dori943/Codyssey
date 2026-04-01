@@ -197,17 +197,21 @@ EOF
 
 #확인
 ls -l
+#total 8
+#-rw-r--r--  1 ehgml89458755  ehgml89458755  126 Apr  1 13:52 Dockerfile
+#drwxr-xr-x  3 ehgml89458755  ehgml89458755   96 Apr  1 13:40 site
 
 cat Dockerfile
 cat site/index.html
 
 #빌드 및 실행
 docker build -t my-web:1.0 .
-# Successfully built ...
+# [+] Building 7.6s (7/7) FINISHED ...
 
 # 빌드된 이미지 확인
 docker images
 
+#
 docker run -d -p 8080:80 --name my-web-8080 my-web:1.0
 docker run -d -p 8081:80 --name my-web-8081 my-web:1.0
 
