@@ -174,13 +174,13 @@ mkdir -p ~/workstation/my-web/site
 cd ~/workstation/my-web
 
 # site/index.html 파일 만들기
-<!DOCTYPE html>
+echo '<!DOCTYPE html>
 <html>
   <body>
     <h1>My Custom Web Server</h1>
     <p>Docker로 실행 중!</p>
   </body>
-</html>
+</html>' > site/index.html
 
 # Dockerfile 작성
 FROM nginx:alpine
