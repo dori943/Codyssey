@@ -174,15 +174,18 @@ mkdir -p ~/workstation/my-web/site
 cd ~/workstation/my-web
 
 # site/index.html 파일 만들기
-echo '<!DOCTYPE html>
+cat > site/index.html << 'EOF'
+<!DOCTYPE html>
 <html>
   <body>
     <h1>My Custom Web Server</h1>
     <p>Docker로 실행 중!</p>
   </body>
-</html>' > site/index.html
+</html>
+EOF
 
-# Dockerfile 작성
+# Dockerfile 만들기
+cat > Dockerfile << 'EOF'
 FROM nginx:alpine
 
 LABEL org.opencontainers.image.title="my-custom-nginx"
@@ -190,6 +193,13 @@ LABEL org.opencontainers.image.title="my-custom-nginx"
 ENV APP_ENV=dev
 
 COPY site/ /usr/share/nginx/html/
+EOF
+
+#확인
+ls -l
+
+cat Dockerfile
+cat site/index.html
 
 #빌드 및 실행
 docker build -t my-web:1.0 .
