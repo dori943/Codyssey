@@ -248,6 +248,9 @@ EOF
 ```
 
 ### 4-7. Docker 볼륨 영속성
+
+Volume은 컨테이너를 삭제하면 안에 있는 데이터 사라짐을 방지하기 위해, 컨테이너 밖에 데이터를 저장하는 공간임. (docker가 관리하는 공간)
+
 ```bash
 # 볼륨 생성
 docker volume create mydata
@@ -273,13 +276,17 @@ docker exec -it vol-test2 bash -c "cat /data/hello.txt"
 
 ### 4-8. Git 설정
 ```bash
-git config --global user.name "이름"
-git config --global user.email "이메일"
+# 사용자 정보 설정
+git config --global user.name "홍길동"
+git config --global user.email "your@email.com"
+
+# 기본 브랜치 이름 설정
 git config --global init.defaultBranch main
 
+# 설정 전체 확인 → 이 출력을 README에 그대로 기록
 git config --list
-# user.name=이름
-# user.email=이메일
+# user.name=홍길동
+# user.email=your@email.com
 # init.defaultBranch=main
 ```
 
