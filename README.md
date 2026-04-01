@@ -188,14 +188,16 @@ cat > site/index.html << 'EOF'
 EOF
 
 # Dockerfile 만들기
+# EOF는 터미널 명령어로, EOF 사이의 내용을 파일로 저장함.
+
 cat > Dockerfile << 'EOF'
-FROM nginx:alpine
+FROM nginx:alpine # 베이스를 nginx:alpine으로 설정함
 
-LABEL org.opencontainers.image.title="my-custom-nginx"
+LABEL org.opencontainers.image.title="my-custom-nginx" #이미지에 메타데이터(태그)를 붙임, 나중에 docker inspect로 이미지 정보 볼때 표시됨(없어도 동작하지만 설명을 남기기 위해)
 
-ENV APP_ENV=dev
+ENV APP_ENV=dev #컨테이너 안에 환경변수를 설정,(개발/운영)을 구분하려고 넣음.
 
-COPY site/ /usr/share/nginx/html/
+COPY site/ /usr/share/nginx/html/ #내 컴퓨터 site/ 폴더를 컨테이너 안으로 복사함. 저 경로가 웹페이지를 읽음.
 EOF
 
 #확인
